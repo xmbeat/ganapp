@@ -1,0 +1,31 @@
+expandable {
+    overflow: hidden;
+    
+    .dynamic{
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    
+        
+        transition: 0.2s ease-out max-height;
+        &.collapsed {
+            transition: 0.2s ease-out max-height;
+            max-height: 0 !important;
+        }
+    }
+
+    .fixed{
+        ion-icon.expand-icon{
+            transition: 0.2s ease-out all;   
+            &.expanded{
+                transition: 0.2s ease-out all;
+                transform: rotate(90deg);
+            }
+        }
+
+    }
+ 
+}
+
+
+

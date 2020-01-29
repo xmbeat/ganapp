@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('data-group')}}</ion-title>
+    
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!items.length" class="no-items">
+    <div class="content">
+      <img src="assets/img/stats.png" style="width:100px">
+      <h3> {{lang.get('no-items')}}</h3>
+    </div>
+  </div>
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of items; let i = index" >
+
+      <button ion-item (click)="itemTapped($event, i)" detail-none>
+        <div item-start>
+          <div class="color-icon" [style.background]="item.color"></div>
+        </div>
+        <h2>{{item.name}}</h2>
+       
+
+      </button>
+
+      <ion-item-options side="right" *ngIf="!showOnlyList">
+       
+          <button ion-button color="danger" (click)="itemDelete($event, i)">
+            <ion-icon name="trash" ></ion-icon>
+          </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer *ngIf="!showOnlyList"> 
+  <ion-toolbar color="primary">
+    
+    <div class="footer-buttons">
+      <ion-input class="input-text-footer" [(ngModel)]="groupName" placeholder="{{lang.get('group-name')}}"></ion-input>
+
+      <button [disabled]="!groupName" ion-button icon-end style="float:right;" color="secondary" (click)="agregarGrupo()">
+        <span class="responsive-text">
+        {{lang.get('add')}}
+        </span>
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

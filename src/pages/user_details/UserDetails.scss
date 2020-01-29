@@ -1,0 +1,19 @@
+.fotoContainer{
+	position: relative;
+	width: 100%;
+	height: 180px;
+	display: block;
+	overflow: hidden;
+	background-color: transparent;
+	img{
+		border-radius: 4px;
+		position: absolute;
+		height: 100%;
+		width: auto;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+

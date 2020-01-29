@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('user-details')}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-start (click)="guardar()" > 
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="segment-container">
+  <div class="segment-tab">
+    
+    <ion-list>
+      <div class="fotoContainer" (click)="tomarFoto()">
+        <img *ngIf="user.imagen" src="data:image/jpeg;base64,{{user.imagen}}">
+        <img *ngIf="!user.imagen" src="assets/img/user.png">
+      </div>
+      <ion-list-header>
+          {{lang.get('user-details')}}
+        </ion-list-header>
+      <ion-item class="first-item">
+        <ion-label>{{lang.get('user-username')}}:</ion-label>
+        <ion-input type="text" [(ngModel)]="user.usuario"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>{{lang.get('user-password')}}:</ion-label>
+        <ion-input type="text" [(ngModel)]="user.temp_password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>{{lang.get('user-firstname')}}:</ion-label>
+        <ion-input type="text" [(ngModel)]="user.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{lang.get('user-lastname')}}:</ion-label>
+        <ion-input type="text" [(ngModel)]="user.apellido"></ion-input>
+        
+      </ion-item>
+      <ion-item>
+        <ion-label>{{lang.get('user-phone')}}:</ion-label>
+        <ion-input type="number" [(ngModel)]="user.telefono"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{lang.get('user-email')}}:</ion-label>
+        <ion-input type="text" [(ngModel)]="user.correo"></ion-input>
+      </ion-item>
+      <ion-item class="last-item">
+        <ion-label>{{lang.get('user-permissions')}}:</ion-label>
+
+        <ion-select [(ngModel)]="user.permisos" multiple="true">
+          <ion-option value="0" > {{lang.get('user-permissions-cattle-write')}} </ion-option>
+          <ion-option value="1" > {{lang.get('user-permissions-cattle-read')}} </ion-option>
+          <ion-option value="2" > {{lang.get('user-permissions-user-write')}} </ion-option>
+          <ion-option value="3" > {{lang.get('user-permissions-user-read')}} </ion-option>
+        </ion-select>
+      </ion-item>
+
+    </ion-list>
+  </div>
+</ion-content>

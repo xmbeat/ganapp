@@ -1,0 +1,37 @@
+.ios, .md {
+ 
+    page-stats {
+ 
+        .scroll-content {
+            background-color: map-get($colors, light);
+        }
+ 
+        ion-card-header {
+            font-weight: bold;
+		}
+		expandable{
+			img{
+				max-width: 50px;
+			}
+			ion-list-header{
+				margin-bottom: 0px;
+			}
+			.fixed{
+			}
+		}
+ 		.mini-head{
+ 			text-align:center;
+ 			font-weight:bold;
+ 			h3{
+ 				color:777777;
+
+ 			}
+ 			p{
+ 				font-size:2em;
+ 				text-shadow:1px 1px 2px #424242;
+ 			}
+
+ 		}
+    }
+ 
+}

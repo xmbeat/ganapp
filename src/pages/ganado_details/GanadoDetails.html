@@ -1,0 +1,275 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('registers')}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-start (click)="guardar()" > 
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="segment-container">
+  <ion-fab *ngIf="source && source['id']" bottom right #fab>
+     <button ion-fab ><ion-icon name="arrow-dropleft" ></ion-icon> </button>
+     <ion-fab-list side="left">
+       <button ion-fab color="secondary"><ion-icon name="stats" ></ion-icon>  </button>
+       <button ion-fab color="secondary" (click)="openHistory()"><ion-icon name="paper" ></ion-icon>  </button>
+     </ion-fab-list>
+   </ion-fab>
+  <div [ngSwitch] = "activeSegment" >
+    <div *ngSwitchCase = "'0'" class="segment-tab">
+      <ion-list>
+        <ion-item class="first-item last-item">
+          <div class="fotoContainer">
+            <img *ngIf="bovino.imagen" src="data:image/jpeg;base64,{{bovino.imagen}}" (click)="verFoto()">
+            <img *ngIf="!bovino.imagen" src="assets/img/ganado-default-image.png">
+            <button ion-button round only-icon large color="secondary" class="cameraButton" (click)="tomarFoto()"><ion-icon name="camera"></ion-icon></button>
+          </div>
+        </ion-item>
+        <ion-list-header>
+          {{lang.get('info-ids')}}
+        </ion-list-header>
+        <ion-item class="first-item">
+          <ion-label>{{lang.get('name')}}:</ion-label>
+          <ion-input type="text" placeholder="" [(ngModel)]="bovino.nombre"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>SINIIGA:</ion-label>
+          <ion-input type="text" placeholder="" [(ngModel)]="bovino.siniiga"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('mother')}} (SINIIGA):</ion-label>
+          <ion-input type="text" placeholder="" disabled [(ngModel)]="bovino.madre"></ion-input>
+          <button ion-button item-end (click)="buscar($event, 'madre')" ><ion-icon name="search"></ion-icon></button>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('father')}} (SINIIGA):</ion-label>
+          <ion-input type="text" placeholder="" disabled [(ngModel)]="bovino.padre"></ion-input>
+          <button ion-button item-end only-icon (click)="buscar($event, 'padre')"><ion-icon name="search"></ion-icon></button>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-tattoo')}}:</ion-label>
+          <ion-input type="text" placeholder="" [(ngModel)]="bovino.tatuaje"></ion-input>
+        </ion-item>
+        <ion-item class="last-item">
+          <ion-label>{{lang.get('cattle-tattoo-location')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.localizacion">
+            <ion-option *ngFor="let l of lang.get('cattle-tattoo-location-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-list-header>
+          {{lang.get('info-general')}}
+        </ion-list-header>
+        <ion-item class="first-item">
+          <ion-label>
+          {{lang.get('cattle-status')}}
+          </ion-label>
+          <ion-select [(ngModel)]="bovino.status">
+            <ion-option *ngFor="let l of lang.get('cattle-status-list'); let i = index" value="{{i}}"> {{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-sex')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.sexo">
+            <ion-option *ngFor="let l of lang.get('cattle-sex-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-snout-color')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.color_morro">
+            <ion-option *ngFor="let l of lang.get('cattle-snout-color-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-horns')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.cuernos">
+            <ion-option *ngFor="let l of lang.get('cattle-horns-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-genetic-grade')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.grado_genetico">
+            <ion-option *ngFor="let l of lang.get('cattle-genetic-grade-list'); let i = index" value="{{i}}"> {{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-skin-color')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.color_capa">
+            <ion-option *ngFor="let l of lang.get('cattle-skin-color-list'); let i = index" value="{{i}}"> {{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-eye-color-right')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.pigmentacion_ojo_derecho">
+            <ion-option *ngFor="let l of lang.get('cattle-eye-color-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="last-item">
+          <ion-label>{{lang.get('cattle-eye-color-left')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.pigmentacion_ojo_izquierdo">
+            <ion-option *ngFor="let l of lang.get('cattle-eye-color-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-list-header>{{lang.get('info-delivery')}}</ion-list-header>
+        <ion-item class="first-item">
+          <ion-label>{{lang.get('cattle-birth-date')}}:</ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="bovino.fecha_nacimiento" (ngModelChange) = "onBirthChange($event)"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-birth-type')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.tipo_nacimiento">
+            <ion-option *ngFor="let l of lang.get('cattle-birth-type-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>{{lang.get('cattle-delivery-type')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.tipo_parto">
+            <ion-option *ngFor="let l of lang.get('cattle-delivery-type-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>{{lang.get('cattle-service-date')}}:</ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="bovino.fecha_servicio"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-service-type')}}:</ion-label>
+          <ion-select [(ngModel)]="bovino.tipo_servicio">
+            <ion-option *ngFor="let l of lang.get('cattle-service-type-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label> {{lang.get('cattle-birth-weight')}} (kg.): </ion-label>
+          <ion-input type="number" min="0" max="80" [(ngModel)]="bovino.peso_nacimiento"></ion-input>
+        </ion-item>
+        <ion-item  class="last-item">
+          <ion-range min="0" max="80" [(ngModel)]="bovino.peso_nacimiento" color="primary"></ion-range>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase = "'1'" class="segment-tab">
+      <ion-list>
+        <ion-item class="first-item">
+          <ion-label>{{lang.get('cattle-weaning-date')}}:</ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="bovino.fecha_peso_destete"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label> {{lang.get('cattle-weaning-weight')}} (kg.): </ion-label>
+          <ion-input type="number" min="80" max="500" [(ngModel)]="bovino.peso_destete"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-range min="80" max="500" [(ngModel)]="bovino.peso_destete" color="primary">
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-weaning-manage')}}</ion-label>
+          <ion-select [(ngModel)]="bovino.manejo_destete">
+            <ion-option *ngFor="let l of lang.get('cattle-weaning-manage-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="last-item">
+          <ion-label> {{lang.get('cattle-weaning-group')}} </ion-label>
+          <ion-input type="text" [(ngModel)]="bovino.grupo_destete"></ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase = "'2'" class="segment-tab">
+      <ion-list>
+        <ion-item class="first-item">
+          <ion-label>{{lang.get('cattle-anual-date')}}:</ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="bovino.fecha_peso_anual"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label> {{lang.get('cattle-anual-weight')}} (kg.): </ion-label>
+          <ion-input type="number" min="180" max="700" [(ngModel)]="bovino.peso_anual"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-range min="180" max="700" [(ngModel)]="bovino.peso_anual" color="primary">
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-anual-manage')}}</ion-label>
+          <ion-select [(ngModel)]="bovino.tipo_manejo_anual">
+            <ion-option *ngFor="let l of lang.get('cattle-anual-manage-list'); let i = index" value="{{i}}" >{{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="last-item">
+          <ion-label>{{lang.get('cattle-anual-group')}} </ion-label>
+          <ion-input type="text" [(ngModel)]="bovino.grupo_anual"></ion-input>
+        </ion-item>
+        <ion-list-header>
+          {{lang.get('measures')}}
+        </ion-list-header>
+        <ion-item class="first-item">
+          <ion-label> {{lang.get('cattle-scrotal-date')}} </ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="bovino.fecha_circunferencia"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label> {{lang.get('cattle-scrotal-circumference')}} (cm): </ion-label>
+          <ion-input type="number" min="0" max="100" [(ngModel)]="bovino.circunferencia_escrotal"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-range min="0" max="100" [(ngModel)]="bovino.circunferencia_escrotal" color="primary">
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-pelvimetry-date')}}</ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="bovino.fecha_pelvimetria"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label> {{lang.get('cattle-pelvimetry-horizontal')}} (cm): </ion-label>
+          <ion-input type="number" min="0" max="100" [(ngModel)]="bovino.pelvimetria_horizontal"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-range min="0" max="100" [(ngModel)]="bovino.pelvimetria_horizontal" color="primary">
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label> {{lang.get('cattle-pelvimetry-vertical')}} (cm): </ion-label>
+          <ion-input type="number" min="0" max="100" [(ngModel)]="bovino.pelvimetria_vertical"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-range min="0" max="100" [(ngModel)]="bovino.pelvimetria_vertical" color="primary">
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{lang.get('cattle-body-size-date')}}</ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="bovino.fecha_talla_corporal"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label> {{lang.get('cattle-body-size')}} (cm): </ion-label>
+          <ion-input type="number" min="0" max="1000" [(ngModel)]="bovino.talla_corporal"></ion-input>
+        </ion-item>
+        <ion-item class="last-item">
+          <ion-range min="0" max="1000" [(ngModel)]="bovino.talla_corporal" color="primary">
+          </ion-range>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer >
+  <ion-toolbar>
+    <ion-segment [(ngModel)] = "activeSegment" color="primary">
+      <ion-segment-button value="0">
+        {{lang.get('cattle-birth')}}
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        {{lang.get('cattle-weaning')}}
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        {{lang.get('cattle-anual')}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

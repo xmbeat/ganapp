@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('historial-filter')}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="filter-section">
+    <div class="filter-header">
+      <span>{{lang.get('parameters')}}</span>
+    </div>
+    <div class="filter-body">
+
+      <div class="filter-element">
+        <div> 
+          <div class="left"> <ion-checkbox color="secondary" [(ngModel)]="date.enabled"></ion-checkbox> </div> 
+          <div class="right"><div>{{lang.get('historial-date-filter')}}</div> </div > 
+        </div>
+        <div>
+          <ion-item>
+            <ion-label>
+            {{lang.get('from')}}
+            </ion-label>
+            <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="date.from" [disabled] = '!date.enabled'></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+            {{lang.get('to')}}
+            </ion-label>
+            <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="date.to" [disabled] = '!date.enabled'></ion-datetime>
+          </ion-item>
+        </div>
+      </div>
+
+      <div class="filter-element">
+        <ion-item>
+          <ion-label>
+          {{lang.get('historial-type')}}
+          </ion-label>
+          <ion-select [(ngModel)]="types" multiple="true">
+            <ion-option *ngFor="let l of lang.get('historial-type-list'); let i = index" value="{{i}}"> {{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+      
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer> 
+  <ion-toolbar color="primary">
+    <div>
+      <button ion-button icon-end style="float:right;" color="secondary" (click)="filtrar()">
+        {{lang.get('ok')}}
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

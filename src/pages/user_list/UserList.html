@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('users')}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-start (click)="refresh(true)"> 
+        <ion-icon name="refresh-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    
+    <!-- <ion-list-header>{{items.length}} {{lang.get('users')}}</ion-list-header>
+    <button ion-item  *ngFor="let item of items; let i = index" (click)="itemTapped($event, i)">
+      <ion-avatar item-start>
+        <img *ngIf="item.imagen" src="data:image/jpeg;base64,{{item.imagen}}">
+        <img *ngIf="!item.imagen" src="assets/img/user.png">
+      </ion-avatar>
+      <h2>{{item.nombre}}</h2>
+      <p>Tel. {{item.telefono}}</p>
+    </button> -->
+    <ion-list-header>{{items.length}} {{lang.get('users')}}</ion-list-header>
+    <ion-item-sliding *ngFor="let item of items; let i = index" (click)="itemTapped($event, i)">
+        
+        <button  ion-item >
+            <ion-avatar item-start>
+                <img *ngIf="item.imagen" src="data:image/jpeg;base64,{{item.imagen}}">
+                <img *ngIf="!item.imagen" src="assets/img/user.png">
+              </ion-avatar>
+              <h2>{{item.nombre}}</h2>
+              <p>Tel. {{item.telefono}}</p>
+        </button>
+        
+  
+        <ion-item-options side="right" *ngIf="!selectOnly">
+            <button ion-button color="danger" (click)="itemDelete($event, i)">
+              <ion-icon name="trash" ></ion-icon>
+            </button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+  </ion-list>
+
+</ion-content>
+
+<ion-footer> 
+  <ion-toolbar color="primary">    
+    <div class="footer-buttons">      
+      <button ion-button icon-end style="float:right;" color="secondary" (click)="agregarRegistro()">      
+        {{lang.get('add')}}
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

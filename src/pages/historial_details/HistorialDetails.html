@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('historial-details')}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-start (click)="guardar()" > 
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="segment-container">
+  <div class="segment-tab">
+    
+    <ion-list>
+
+      <ion-list-header>
+        {{lang.get('info-general')}}
+      </ion-list-header>
+
+      <div class="section-items">
+        <ion-item *ngIf="ganado && ganado.sexo == 0">
+          <ion-label>{{lang.get('historial-type')}}</ion-label>
+          <ion-select [(ngModel)]="registro.tipo">
+            <ion-option *ngFor="let l of lang.get('historial-type-list-f'); let i = index" value="{{l[0]}}" >{{l[1]}}  </ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="ganado && ganado.sexo == 1">
+          <ion-label>{{lang.get('historial-type')}}</ion-label>
+          <ion-select [(ngModel)]="registro.tipo">
+            <ion-option *ngFor="let l of lang.get('historial-type-list-m'); let i = index" value="{{l[0]}}" >{{l[1]}}  </ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>{{lang.get('register-date')}}:</ion-label>
+          <ion-datetime displayFormat="DD de MMMM, YYYY" [(ngModel)]="registro.fecha"></ion-datetime>
+        </ion-item>
+
+        <ion-item >
+          <ion-label> {{lang.get('description')}} </ion-label>
+          <ion-input type="text" [(ngModel)]="registro.anotaciones"></ion-input>
+        </ion-item>
+
+      </div>
+      
+      <div [ngSwitch]="registro.tipo">
+        <!--SERVICIO-->
+        <div *ngSwitchCase="'1'">
+          <ion-list-header>{{lang.get('historial-type-list')[1]}}</ion-list-header>
+          <div class="section-items">
+            <ion-item>
+              <ion-label>{{lang.get('cattle-service-type')}}</ion-label>
+              <ion-select [(ngModel)]="servicio.tipo">
+                <ion-option *ngFor="let serviceType of lang.get('cattle-service-type-list'); let i = index" value="{{i}}">{{serviceType}} </ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>{{lang.get('cattle-service-success')}}</ion-label>
+              <ion-checkbox item-end [(ngModel)]="servicio.status"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>{{lang.get('father')}}</ion-label>
+              <ion-input [(ngModel)]="servicio.padre" disabled></ion-input>
+              <button ion-button item-end (click)="buscar($event, 'padre')" ><ion-icon name="search"></ion-icon></button>
+            </ion-item>
+            <ion-item *ngIf="servicio.tipo == 2 || servicio.tipo == '2'">
+              <ion-label>{{lang.get('mother')}}</ion-label>
+              <ion-input [(ngModel)]="servicio.madre" disabled></ion-input>
+              <button ion-button item-end (click)="buscar($event, 'madre')" ><ion-icon name="search"></ion-icon></button>
+            </ion-item>
+          </div>
+        </div>
+        <!-- END SERVICIO -->
+
+        <!--SECCION CUANDO ES PARTO-->
+        <div *ngSwitchCase="'2'">
+          <ion-list-header>{{lang.get('cattle-child')}}</ion-list-header>
+          <div class="section-items">
+            <ion-item>
+              <ion-label>{{lang.get('cattle-delivery-type')}}</ion-label>
+              <ion-select [(ngModel)]="parto.tipo">
+                <ion-option *ngFor="let deliveryType of lang.get('cattle-delivery-type-list'); let i = index" value="{{i}}">{{deliveryType}} </ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item-sliding *ngFor="let hijo of parto.hijos; let i = index">
+              <button ion-item (click)="childTapped($event, i)">
+                <ion-avatar item-start>
+                  <img *ngIf="hijo.imagen" src="data:image/jpeg;base64,{{hijo.imagen}}">
+                  <img *ngIf="!hijo.imagen" src="assets/img/ganado-default-image.png">
+                </ion-avatar>
+                <h2>{{hijo.tatuaje}}</h2>
+                <p>{{hijo.nombre}}</p>
+              </button>
+
+              <ion-item-options side="right" >
+                  <button ion-button (click)="removeChildren(i)" color="danger">
+                    <ion-icon name="trash" ></ion-icon>
+                  </button>
+              </ion-item-options>
+            </ion-item-sliding>
+
+            <button ion-item detail-none (click)="addChildren()">
+                <ion-icon name="add" item-start></ion-icon>
+                {{lang.get('add-children')}}
+            </button>
+          </div>
+        </div>
+        <!-- END PARTO-->
+
+        <!--ENFERMEDAD-->
+        <div *ngSwitchCase="'3'">
+          <ion-list-header>{{lang.get('historial-type-list')[3]}}</ion-list-header>
+          <div class="section-items">
+            <ion-item>
+              <ion-label>{{lang.get('diagnostic')}}</ion-label>
+              <ion-input [(ngModel)]="enfermedad.diagnostico"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>{{lang.get('treatment')}}</ion-label>
+              <ion-input [(ngModel)]="enfermedad.tratamiento"></ion-input>
+            </ion-item>
+          </div>
+        </div>
+        <!-- END ENFERMEDAD -->
+        
+         <!--MUERTE-->
+         <div *ngSwitchCase="'4'">
+          <ion-list-header>{{lang.get('historial-type-list')[4]}}</ion-list-header>
+          <div class="section-items">
+            <ion-item>
+              <ion-label>{{lang.get('death-type')}}</ion-label>
+              <ion-select [(ngModel)]="muerte.tipo">
+                <ion-option *ngFor="let tipo of lang.get('cattle-death-type-list'); let i = index" value="{{i}}">{{tipo}} </ion-option>
+              </ion-select>
+            </ion-item>
+          </div>
+        </div>
+        <!-- END MUERTE -->
+        
+      </div>
+
+    </ion-list>
+  </div>
+</ion-content>

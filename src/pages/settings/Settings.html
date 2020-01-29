@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('settings')}}</ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    
+    <ion-list-header>
+      {{lang.get('interface')}}
+    </ion-list-header>
+
+    <ion-item>
+      <div item-start>
+        <img height="30px" src="assets/img/language.png">
+      </div>
+      <ion-label>{{lang.get('language')}}</ion-label>
+      <ion-select [(ngModel)]="languageIndex" (ngModelChange)="onChangeLanguage($event)">
+        <ion-option *ngFor="let language of lang.get('language-list'); let i = index" value="{{i}}" >{{language.value}}  </ion-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <div item-start>
+        <img height="30px" src="assets/img/internet.png">
+      </div>
+      <ion-label>{{lang.get('mode')}}</ion-label>
+      <ion-select [(ngModel)]="mode" (ngModelChange)="onChangeMode($event)">
+        <ion-option *ngFor="let m of lang.get('mode-list'); let i = index" value="{{i}}">
+          {{m}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item-sliding>
+      <ion-item>
+        <div item-start>
+          <img height="30px" src="assets/img/user.png">
+        </div>
+        <ion-label>
+          {{lang.get('session')}}
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="right" >
+       
+          <button ion-button (click)="login()">
+             <ion-icon name="log-in" ></ion-icon> 
+          </button>
+          <button ion-button (click)="logout()"color="danger" *ngIf="conf.configs['user']">
+             <ion-icon name="log-out" ></ion-icon> 
+          </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+
+    <ion-list-header>
+      {{lang.get('database')}}
+    </ion-list-header>
+    <ion-item-sliding *ngIf="conf.configs.user">
+      <ion-item>
+        <div item-start>
+          <img height="30px" src="assets/img/cloud.png">
+        </div>
+        <ion-label>{{lang.get('cloud-storage')}}</ion-label>
+      </ion-item>
+
+      <ion-item-options side="right" style="box-shadow: rgba(0, 0, 0, 0.701961) 0px 0px 10px 0px inset;background-color: #e5e5e5;">
+        <div class="item-options" *ngIf="conf.configs['user']">
+          <button ion-button block (click)="saveCloud()">
+             <ion-icon name="cloud-upload" ></ion-icon> 
+          </button>
+          <button ion-button block (click)="getCloudCopy()" color="secondary">
+             <ion-icon name="cloud-download" ></ion-icon> 
+          </button>
+        </div>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item-sliding>
+      <ion-item>
+        <div item-start>
+          <img height="30px" src="assets/img/recycle.png">
+        </div>
+        <ion-label>
+          {{lang.get('recycle')}}
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="right" style="box-shadow: rgba(0, 0, 0, 0.701961) 0px 0px 10px 0px inset;background-color: #e5e5e5;">
+        <div class="item-options" *ngIf="conf.configs['user']">
+          <button ion-button block  (click)="restoreRecyclebin()">
+             <ion-icon name="undo" ></ion-icon> 
+          </button>
+          <button ion-button block  (click)="emptyRecyclebin()" color="danger">
+             <ion-icon name="trash" ></ion-icon> 
+          </button>
+        </div>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    
+
+  </ion-list>
+
+
+
+</ion-content>

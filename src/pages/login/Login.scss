@@ -1,0 +1,45 @@
+.login-container{
+	background-color: rgb(230,230,230);
+	padding: 10px;
+	.login-form {
+		position: absolute;
+		width: 100%;
+		max-width: 260px;
+		top:50%;
+		left:50%;
+		transform: translate(-50%, -50%);
+		.login-image{
+			margin-top:20px;
+			margin-bottom: 20px;
+		}
+
+		.input-item{
+			color:gray;
+	        background-color: rgba(255,255,255,0.7);
+	        border-color: rgba(255,255,255,0);
+	        border-radius: 5px;
+
+	        &.top-input{
+	            border-radius: 4px 4px 0px 0px;   
+	        }
+	        
+	        &.bottom-input{
+	            border-radius: 0px 0px 4px 4px;
+	        }
+	    }
+	}	
+}
+
+.login-error{
+	position: relative;
+    padding:10px;
+    border:1px solid darken(color($colors, danger), 10%);
+    background-color: rgba(color($colors, danger), 0.7);
+    border-radius:4px;
+    margin-bottom:10px;
+    
+    p{
+        color:white;
+        margin:0px;
+    }
+}

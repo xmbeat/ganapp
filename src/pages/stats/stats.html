@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Estadísticas</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngFor="let stat of this.stat_columns; let i = index">
+    <ion-card>
+      <ion-card-header>
+        {{this.lang.get(stat)}}
+      </ion-card-header>
+      <ion-card-content no-padding>
+        
+        <canvas #lineCanvas></canvas>
+        <div style="margin-top:10px">
+        <expandable *ngFor="let group of this.groups" [collapsed]='true'>
+          <div class="fixed">
+            <ion-list-header (click)="exp_id=!exp_id" color="light">
+              {{group.name}}
+              <ion-icon class="expand-icon" [style.color]="group.color" item-end name="arrow-dropright-circle"></ion-icon>
+            </ion-list-header>
+          </div>
+          <div class="dynamic">
+            <div *ngIf="group.stats != null">
+              <ion-grid>
+                <ion-row class="mini-head">
+                    <ion-col><h3>{{this.lang.get('average')}}</h3><p>{{group.stats[i].average.toFixed(2)}}</p></ion-col>
+                    <ion-col><h3>{{this.lang.get('deviation')}}</h3><p>{{group.stats[i].deviation.toFixed(2)}}</p></ion-col>
+                </ion-row>
+              </ion-grid>
+              <button ion-item  *ngFor="let ganado of group.stats[i].sorted">
+                <div item-start>
+                  <img *ngIf="ganado.sexo != 1" src="assets/img/female.png">
+                  <img *ngIf="ganado.sexo == 1" src="assets/img/male.png">
+                </div>
+            
+                <h2> {{ganado.siniiga?ganado.siniiga:ganado.tatuaje}} </h2>
+                <p> {{this.lang.get(stat)}} : {{ganado[this.stat_columns[i]]}}</p>
+              </button>
+            </div>
+            <div *ngIf="group.stats == null">
+              No hay suficientes datos para este grupo
+            </div>
+          </div>
+        </expandable>
+        </div>
+       
+        
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-fab bottom right>
+   <button (click)="addGroup()" ion-fab><img src="assets/img/scale.png"></button>
+  </ion-fab>
+
+
+</ion-content>

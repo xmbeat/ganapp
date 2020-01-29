@@ -1,0 +1,32 @@
+<ion-content class="login-container">
+
+  <div class="login-form">
+    <div class="login-image">
+      <img src="assets/img/logo.png"  style="display:block;width:50%;height:auto;margin-left:auto;margin-right:auto;" />
+    </div>
+    <ion-list>
+      <ion-item class="top-input">
+        <ion-label>
+          {{lang.get('account')}}
+        </ion-label>
+        <ion-input class="top-input" type="text" placeholder="" [(ngModel)]=login.user></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label class="bottom-input">
+          {{lang.get('password')}}
+        </ion-label>
+        <ion-input type="password" placeholder="" [(ngModel)]=login.password></ion-input>
+      </ion-item>
+    </ion-list>
+    <div class="spacer" style="height:32px;"></div>
+    <button ion-button block (click) ="onlineLogin()">
+      {{lang.get('enter')}}
+    </button>
+    <div style="margin:auto; width:40%; margin-top:16px;">
+      <button ion-button clear block color="danger" (click) = "offlineLogin()" >
+        {{lang.get('mode-offline')}}
+      </button>
+    </div>
+  </div>
+
+</ion-content>

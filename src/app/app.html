@@ -1,0 +1,32 @@
+
+  <ion-menu [content]="content" id="mainMenu">
+    <!--
+    <ion-header class="primary" >
+      <ion-toolbar>
+        <ion-title> Usuario </ion-title>
+      </ion-toolbar>
+    </ion-header>
+    -->
+    <ion-content class="side-menu-gradient">
+      <div class="profile-header">
+        <div class="profile-image">
+          <img *ngIf="!configurations.configs['user'] || !configurations.configs['user']['imagen']" src="assets/img/user.png" >
+          <img *ngIf="configurations.configs['user'] && configurations.configs['user']['imagen']" src="data:image/jpeg;base64,{{configurations.configs['user'].imagen}}">
+        </div>
+        <div class="profile-text">
+          <h2 *ngIf="!configurations.configs['user']"> Anonimo </h2>
+          <h2 *ngIf="configurations.configs['user']"> {{configurations.configs['user'].nombre}}</h2>
+        </div>
+      </div>
+      <ion-list>
+        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+          <ion-icon [name]="p.icon" item-left></ion-icon>
+          {{this.lang.get(p.title)}}
+        </button>
+      </ion-list>
+    </ion-content>
+  
+  </ion-menu>
+  
+  <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+  <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

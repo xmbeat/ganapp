@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('cattle-filter')}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content-theme">
+  <div class="filter-section">
+    <div class="filter-header">
+      <span>{{lang.get('cattle-filter-weight')}}</span>
+    </div>
+    <div class="filter-body">
+
+      <div class="filter-element">
+        <div> 
+          <div class="left"> <ion-checkbox color="secondary" [(ngModel)]="nacimiento.peso_enabled"></ion-checkbox> </div> 
+          <div class="right"><div>{{lang.get('cattle-birth-weight')}}</div> </div > 
+        </div>
+        <div>
+          <ion-range [(ngModel)]="nacimiento.peso" dualKnobs="true" min="0" max="80" step="5" [disabled] = "!nacimiento.peso_enabled" >
+            <ion-label range-left>Min ({{nacimiento.peso.lower}})</ion-label>
+            <ion-label range-right>Max ({{nacimiento.peso.upper}})</ion-label>
+          </ion-range>
+        </div>
+      </div>
+
+      <div class="filter-element">
+        <div> 
+          <div class="left"> <ion-checkbox color="secondary" [(ngModel)]="destete.peso_enabled"></ion-checkbox> </div> 
+          <div class="right"><div> {{lang.get('cattle-weaning-weight')}}</div> </div > 
+        </div>
+        <div>
+          <ion-range [(ngModel)]="destete.peso" dualKnobs="true" min="80" max="500" step="5" [disabled] = "!destete.peso_enabled">
+            <ion-label range-left>Min ({{destete.peso.lower}})</ion-label>
+            <ion-label range-right>Max ({{destete.peso.upper}})</ion-label>
+          </ion-range>
+        </div>
+      </div>
+
+      <div class="filter-element">
+        <div> 
+          <div class="left"> <ion-checkbox color="secondary" [(ngModel)]="anual.peso_enabled"></ion-checkbox> </div> 
+          <div class="right"><div>{{lang.get('cattle-anual-weight')}}</div> </div > 
+        </div>
+        
+        <div>
+          <ion-range [(ngModel)]="anual.peso" dualKnobs="true" min="180" max="700" step="5" [disabled] = "!anual.peso_enabled" >
+            <ion-label range-left>Min ({{anual.peso.lower}})</ion-label>
+            <ion-label range-right>Max ({{anual.peso.upper}})</ion-label>
+          </ion-range>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="filter-section">
+    <div class="filter-header">{{lang.get('others')}}</div>
+    <div class="filter-body">
+      <div class="filter-element">        
+        <div> 
+          <div class="left"> <ion-checkbox color="secondary" [(ngModel)]="nacimiento.fecha_enabled"></ion-checkbox> </div> 
+          <div class="right"><div>{{lang.get('cattle-birth')}}</div> </div > 
+        </div>
+        <div>
+            <ion-item>
+                <ion-label>{{lang.get('from')}}</ion-label>
+                <ion-datetime min="1990" max="2030" [disabled]="!nacimiento.fecha_enabled" displayFormat="DD MMM YYYY" pickerFormat="DD/MMMM/YYYY" [(ngModel)]="nacimiento.fecha.from"></ion-datetime>
+              </ion-item>
+              <ion-item>
+                <ion-label>{{lang.get('until')}}</ion-label>
+                <ion-datetime min="1990" max="2030" [disabled]="!nacimiento.fecha_enabled" displayFormat="DD MMM YYYY" pickerFormat="DD/MMMM/YYYY" [(ngModel)]="nacimiento.fecha.until"></ion-datetime>
+              </ion-item>
+        </div>
+      </div>
+      
+      <div class="filter-element">
+        <div> 
+          <div class="left"> <ion-checkbox color="secondary" [(ngModel)]="anual.talla_enabled"></ion-checkbox> </div> 
+          <div class="right"><div>{{lang.get('cattle-body-size')}} (cm.)</div> </div > 
+        </div>
+        <ion-range [(ngModel)]="anual.talla" dualKnobs="true" min="100" max="400" step="1" [disabled]="!anual.talla_enabled">
+          <ion-label range-left>Min ({{anual.talla.lower}})</ion-label>
+          <ion-label range-right>Max ({{anual.talla.upper}})</ion-label>
+        </ion-range>
+      </div>
+
+      <div class="filter-element">
+        <ion-item>
+          <ion-label>
+          {{lang.get('cattle-status')}}
+          </ion-label>
+          <ion-select [(ngModel)]="status" multiple="true">
+            <ion-option *ngFor="let l of lang.get('cattle-status-list'); let i = index" value="{{i}}"> {{l}}  </ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer> 
+  <ion-toolbar color="primary">
+    <div>
+      <button ion-button icon-end style="float:right;" color="secondary" (click)="filtrar()">
+        {{lang.get('ok')}}
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

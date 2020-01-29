@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('historial')}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-start (click)="refresh(true)"> 
+        <ion-icon name="refresh-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      {{lang.get('quick-access')}}
+    </ion-list-header>
+      <button ion-item (click)="setFilter({'tipo__in':[0, 1, 2]}, true)">
+        <div item-start>
+          <img height="40px" src="assets/img/inseminacion.png">
+        </div>
+        <h3>{{lang.get('historial-reproductive')}}</h3>
+      </button>
+
+      <button ion-item (click)="setFilter({'tipo':3}, true)">
+        <div item-start>
+          <img height="40px" src="assets/img/medic.png">
+        </div>
+        <h3>{{lang.get('historial-medic')}}</h3>
+      </button>
+
+    <ion-list-header>
+      {{lang.get('cattle-list')}}
+    </ion-list-header>
+
+
+    <ion-item *ngIf="!items.length">
+      <img item-start src="assets/img/historial.png" style="height:40px">
+      <h3> {{lang.get('no-items')}}</h3>
+    </ion-item>
+
+    <ion-item-sliding  *ngFor="let item of items; let i = index">
+      <button ion-item (click)="itemTapped($event, i)">
+        <div item-start [ngSwitch] = "item.tipo">
+          <img height="40px" *ngSwitchCase = "'0'" src="assets/img/heat.png">
+          <img height="40px" *ngSwitchCase = "'1'" src="assets/img/inseminacion.png">
+          <img height="40px" *ngSwitchCase = "'2'" src="assets/img/parto.png">
+          <img height="40px" *ngSwitchCase = "'3'" src="assets/img/enfermedad.png">
+          <img height="40px" *ngSwitchCase = "'4'" src="assets/img/death.png">
+        </div>
+        {{lang.get('historial-type-list')[item.tipo]}}
+    
+        <div item-end >
+          <div class="date-container">
+            <div class="date-year">{{getYear(item.fecha)}}</div>
+            <div class="date-month">{{getShortMonth(item.fecha)}}</div>
+          </div>
+        </div>
+      </button>
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="itemDelete($event, i)">
+          <ion-icon name="trash" ></ion-icon>  
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+    
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(loadNextItems())">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer> 
+  <ion-toolbar color="primary">
+    
+    <div class="footer-buttons">
+      <button ion-button icon-end style="float:left;" (click)="filtrar()">
+        
+        {{lang.get('filter')}}
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+
+      <button ion-button icon-end style="float:right;" color="secondary" (click)="agregarRegistro()">
+        <span class="responsive-text">
+        {{lang.get('add')}}
+        </span>
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

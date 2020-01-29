@@ -1,0 +1,7 @@
+{
+  "name": "ganapp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

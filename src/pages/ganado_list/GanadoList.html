@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lang.get('cattle-list')}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-start (click)="refresh(true)"> 
+        <ion-icon name="refresh-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!items.length" class="no-items">
+    <div class="content">
+      <img src="assets/img/cow.png" style="width:100px">
+      <h3> {{lang.get('no-items')}}</h3>
+    </div>
+  </div>
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of items; let i = index" >
+
+      <button ion-item (click)="itemTapped($event, i)" detail-none>
+          <!--
+          <img *ngIf="item.imagen" src="data:image/jpeg;base64,{{item.imagen}}">
+          -->
+        <div item-start>
+          <img *ngIf="item.sexo != 1" src="assets/img/female.png" height="50px">
+          <img *ngIf="item.sexo == 1" src="assets/img/male.png" height="50px">
+        </div>
+
+        <h2>{{item.identificadores}}</h2>
+        <p> {{item.edad}}</p>
+        <div item-end>
+          <div class="item-status{{item.status}}" >{{lang.get('cattle-status-list')[item.status]}}</div>
+        </div>
+      </button>
+      
+      <ion-item-options side="left" *ngIf="!selectOnly">
+       
+          <button ion-button color="primary" (click)="openStats($event, i)">
+            <ion-icon name="stats" ></ion-icon> 
+          </button>
+          <button ion-button color="secondary" (click)="openHistory($event, i)">
+            <ion-icon name="paper" ></ion-icon>
+          </button>
+        
+      </ion-item-options>
+
+      <ion-item-options side="right" *ngIf="!selectOnly">
+       
+          <button ion-button color="danger" (click)="itemDelete($event, i)">
+            <ion-icon name="trash" ></ion-icon>
+          </button>
+          <button ion-button color="secondary" (click)="itemSold($event, i)">
+            <ion-icon name="cash"></ion-icon>
+          </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(loadNextItems())">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer> 
+  <ion-toolbar color="primary">
+    <div *ngIf="wannaSearch">
+      <ion-searchbar showCancelButton (ionCancel)="onSearchCancel($event)" (ionInput)="onSearchInput($event)" [(ngModel)]="searchText"  (search)="search()"></ion-searchbar>
+    </div>
+    
+    <div class="footer-buttons">
+      <button ion-button icon-end style="float:left;" (click)="wannaSearch=!wannaSearch">
+        <span class="responsive-text">  {{lang.get('search')}} </span>
+        <ion-icon name="search"></ion-icon>
+      </button>
+      <button ion-button icon-end style="float:left;" (click)="filtrar()">
+        <span class="responsive-text">
+        {{lang.get('filter')}}
+        </span>
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+      <button ion-button icon-end style="float:right;" color="secondary" (click)="agregarRegistro()">
+        <span class="responsive-text">
+        {{lang.get('add')}}
+        </span>
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
